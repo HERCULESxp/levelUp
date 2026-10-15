@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11131b">
+  <meta name="description" content="Transforme sua rotina em missões, XP e progresso diário.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>LevelUp — sua vida em progresso</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="LevelUp início"><span class="brand-mark">↗</span><span>level<span class="brand-accent">up</span></span></a>
+      <button id="installBtn" class="install-btn hidden" type="button">Instalar app</button>
+      <button id="settingsBtn" class="icon-button" aria-label="Configurações" title="Configurações">⚙</button>
+    </header>
+
+    <main>
+      <section id="homeScreen" class="screen active">
+        <div class="welcome-row">
+          <div><p class="eyebrow" id="dateLabel">SEU DIA, SUA EVOLUÇÃO</p><h1>Vamos evoluir<span class="accent"> hoje.</span></h1><p class="muted">Pequenas vitórias constroem grandes mudanças.</p></div>
+          <div class="level-orb"><span>LVL</span><strong id="levelNumber">1</strong></div>
+        </div>
+
+        <div class="hero-grid">
+          <article class="streak-card panel">
+            <div class="card-top"><span class="icon-bubble flame">🔥</span><span class="pill" id="streakStatus">EM JOGO</span></div>
+            <p class="muted small">Sequência atual</p>
+            <div class="streak-number"><strong id="streakCount">0</strong><span>dias</span></div>
+            <p class="small muted" id="streakHint">Conclua sua meta de hoje para começar.</p>
+            <div class="streak-dots" id="weekDots"></div>
+          </article>
+          <article class="daily-card panel">
+            <div class="card-top"><span class="icon-bubble target">✦</span><span class="small muted">META DIÁRIA</span></div>
+            <div class="daily-xp"><strong id="todayXp">0</strong><span> / <b id="goalDisplay">50</b> XP</span></div>
+            <div class="progress-track"><div id="dailyProgress" class="progress-fill"></div></div>
+            <p class="small muted" id="dailyHint">Mais 50 XP para manter seu streak.</p>
+            <button id="quickAddBtn" class="button button-primary button-full" type="button">+ Nova missão</button>
+          </article>
+        </div>
+
+        <div class="section-heading"><div><p class="eyebrow">FOCO DO DIA</p><h2>Suas missões</h2></div><button class="text-button" data-nav="tasks">Ver todas ↗</button></div>
+        <div id="homeTasks" class="task-list"></div>
+        <div id="emptyHome" class="empty-state hidden"><div class="empty-icon">✦</div><h3>Seu próximo nível começa aqui</h3><p>Adicione uma missão pequena e transforme intenção em ação.</p><button class="button button-primary" data-action="new-task">Criar primeira missão</button></div>
+        <article class="quote-card"><span class="quote-mark">“</span><div><strong>Consistência vence intensidade.</strong><p>Faça o que puder hoje. Amanhã, continue.</p></div><span class="sparkle">✧</span></article>
+      </section>
+
+      <section id="tasksScreen" class="screen">
+        <div class="page-title"><p class="eyebrow">UM PASSO DE CADA VEZ</p><h1>Missões<span class="accent">.</span></h1><p class="muted">Organize o dia, ganhe XP e avance.</p></div>
+        <div class="filter-row" id="taskFilters">
+          <button class="filter-chip selected" data-filter="all">Todas</button><button class="filter-chip" data-filter="Trabalho">Trabalho</button><button class="filter-chip" data-filter="Hábitos">Hábitos</button><button class="filter-chip" data-filter="Organização">Organização</button>
+        </div>
+        <div class="section-heading compact"><h2>Ativas</h2><button id="addTaskBtn" class="button button-primary" type="button">＋ Criar missão</button></div>
+        <div id="allTasks" class="task-list"></div>
+        <div id="emptyTasks" class="empty-state hidden"><div class="empty-icon">✦</div><h3>Nenhuma missão por aqui</h3><p>Crie uma missão ou adicione uma rotina recorrente.</p><button class="button button-primary" data-action="new-task">Criar missão</button></div>
+        <div class="section-heading compact"><h2>Concluídas hoje</h2></div>
+        <div id="completedTasks" class="task-list"></div>
+      </section>
+
+      <section id="projectsScreen" class="screen">
+        <div class="page-title"><p class="eyebrow">OBJETIVOS GRANDES, ETAPAS PEQUENAS</p><h1>Projetos<span class="accent">.</span></h1><p class="muted">Transforme seus objetivos em uma sequência de missões.</p></div>
+        <div class="section-heading compact"><h2>Seus projetos</h2><button id="addProjectBtn" class="button button-primary" type="button">＋ Projeto</button></div>
+        <div id="projectsList" class="project-list"></div>
+        <div id="emptyProjects" class="empty-state"><div class="empty-icon">⌁</div><h3>Qual é o próximo grande objetivo?</h3><p>Crie um projeto e divida-o em etapas práticas.</p><button class="button button-primary" data-action="new-project">Criar projeto</button></div>
+      </section>
+
+      <section id="progressScreen" class="screen">
+        <div class="page-title"><p class="eyebrow">CADA DIA CONTA</p><h1>Seu progresso<span class="accent">.</span></h1><p class="muted">Veja o quanto você já construiu.</p></div>
+        <div class="stats-grid">
+          <article class="stat-card panel"><span class="stat-icon purple">✦</span><p class="muted small">XP total</p><strong id="totalXp">0</strong></article>
+          <article class="stat-card panel"><span class="stat-icon orange">🔥</span><p class="muted small">Melhor streak</p><strong id="bestStreak">0 <small>dias</small></strong></article>
+          <article class="stat-card panel"><span class="stat-icon green">✓</span><p class="muted small">Missões feitas</p><strong id="totalCompleted">0</strong></article>
+          <article class="stat-card panel"><span class="stat-icon blue">↗</span><p class="muted small">Nível atual</p><strong id="progressLevel">1</strong></article>
+        </div>
+        <article class="panel history-panel"><div class="section-heading compact"><h2>Últimos 7 dias</h2><span class="small muted">XP por dia</span></div><div id="weeklyChart" class="weekly-chart"></div></article>
+        <article class="panel achievements"><div class="section-heading compact"><h2>Conquistas</h2></div><div id="achievementList"></div></article>
+      </section>
+
+      <section id="settingsScreen" class="screen">
+        <div class="page-title"><p class="eyebrow">AJUSTE SUA JORNADA</p><h1>Configurações<span class="accent">.</span></h1></div>
+        <article class="panel settings-panel">
+          <label class="field-label" for="goalInput">Meta diária de XP</label><div class="inline-field"><input id="goalInput" type="number" min="10" max="500" step="5" value="50"><span>XP por dia</span></div>
+          <p class="help-text">Ao atingir essa meta, o dia conta para seu streak.</p>
+          <label class="field-label" for="reminderTime">Horário do lembrete</label><div class="inline-field"><input id="reminderTime" type="time" value="20:30"><button id="saveSettingsBtn" class="button button-primary">Salvar</button></div>
+          <p class="help-text">O lembrete funciona enquanto o app estiver aberto. Notificações em segundo plano dependem do suporte do navegador e podem exigir configuração adicional.</p>
+        </article>
+        <article class="panel settings-panel"><h2>Seus dados</h2><p class="muted small">Os dados ficam salvos neste dispositivo. Exporte um backup regularmente.</p><div class="settings-actions"><button id="exportBtn" class="button button-secondary">Exportar backup</button><label class="button button-secondary file-label">Importar backup<input id="importInput" type="file" accept="application/json"></label><button id="resetBtn" class="button button-danger">Apagar todos os dados</button></div></article>
+        <article class="panel settings-panel"><h2>Instalação</h2><p class="muted small">Para instalar no Android, abra este site no Chrome, toque no menu ⋮ e escolha “Instalar app” ou “Adicionar à tela inicial”. A instalação exige HTTPS.</p></article>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <button class="nav-item active" data-nav="home"><span>⌂</span><small>Hoje</small></button>
+      <button class="nav-item" data-nav="tasks"><span>☷</span><small>Missões</small></button>
+      <button class="nav-item" data-nav="projects"><span>⌁</span><small>Projetos</small></button>
+      <button class="nav-item" data-nav="progress"><span>◔</span><small>Progresso</small></button>
+    </nav>
+  </div>
+
+  <dialog id="taskDialog" class="modal">
+    <form id="taskForm" method="dialog">
+      <div class="modal-header"><div><p class="eyebrow">NOVA AÇÃO</p><h2 id="taskModalTitle">Criar missão</h2></div><button type="button" class="icon-button" data-close="taskDialog">×</button></div>
+      <input id="taskId" type="hidden">
+      <label class="field-label" for="taskTitle">Nome da missão</label><input id="taskTitle" class="text-input" maxlength="100" placeholder="Ex.: Editar vídeo por 30 minutos" required>
+      <label class="field-label" for="taskCategory">Categoria</label><select id="taskCategory" class="text-input"><option>Trabalho</option><option>Hábitos</option><option>Organização</option></select>
+      <div class="form-grid"><div><label class="field-label" for="taskDifficulty">Dificuldade</label><select id="taskDifficulty" class="text-input"><option value="10">Fácil · 10 XP</option><option value="25" selected>Média · 25 XP</option><option value="50">Difícil · 50 XP</option></select></div><div><label class="field-label" for="taskRepeat">Repetição</label><select id="taskRepeat" class="text-input"><option value="once">Só hoje</option><option value="daily">Todos os dias</option><option value="weekdays">Dias úteis</option></select></div></div>
+      <label class="field-label" for="taskDue">Prazo (opcional)</label><input id="taskDue" class="text-input" type="date">
+      <div class="modal-actions"><button type="button" class="button button-secondary" data-close="taskDialog">Cancelar</button><button type="submit" class="button button-primary">Salvar missão</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="projectDialog" class="modal">
+    <form id="projectForm" method="dialog">
+      <div class="modal-header"><div><p class="eyebrow">NOVA CAMPANHA</p><h2>Criar projeto</h2></div><button type="button" class="icon-button" data-close="projectDialog">×</button></div>
+      <label class="field-label" for="projectTitle">Nome do projeto</label><input id="projectTitle" class="text-input" maxlength="100" placeholder="Ex.: Publicar vídeo da semana" required>
+      <label class="field-label" for="projectSteps">Etapas (uma por linha)</label><textarea id="projectSteps" class="text-input" rows="5" placeholder="Pesquisar pauta&#10;Escrever roteiro&#10;Editar vídeo&#10;Publicar"></textarea>
+      <p class="help-text">Cada etapa será criada como uma missão de trabalho de 25 XP.</p>
+      <div class="modal-actions"><button type="button" class="button button-secondary" data-close="projectDialog">Cancelar</button><button type="submit" class="button button-primary">Criar projeto</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="noticeDialog" class="modal notice-modal"><div class="modal-header"><h2 id="noticeTitle">Aviso</h2><button class="icon-button" data-close="noticeDialog" type="button">×</button></div><p id="noticeText" class="muted"></p><div class="modal-actions"><button class="button button-primary" data-close="noticeDialog" type="button">Entendi</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
